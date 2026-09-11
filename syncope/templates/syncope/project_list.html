@@ -4,12 +4,12 @@
 {% block title %}Projects{% endblock %}
 
 {% block content %}
-<h2>Projects</h2>
-{% if membership and ADMIN_ROLE in membership.person.roles.all %}
-<p>
-    <a href="{%  url 'syncope:project_new' url_username %}">+ New Project</a>
-</p>
-{% endif %}
+<div class="section-header">
+    <h2>Projects</h2>
+    {% if membership and ADMIN_ROLE in membership.person.roles.all %}
+    <a href="{%  url 'syncope:project_new' url_username %}" class="btn btn-primary" title="Add new project">+ Add</a>
+    {% endif %}
+</div>
 {% if projects %}
 
 <div style="display:none;">{% csrf_token %}</div>

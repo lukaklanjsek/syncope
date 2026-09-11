@@ -44,19 +44,15 @@
     {% csrf_token %}
 
     {% for field in form %}
-        <div>
+        <div class="form-group">
             <label for="{{ field.id_for_label }}">{{ field.label }}</label>
             {{ field }}
-            {% if field.errors %}
-                <ul class="errorlist">
-                    {% for error in field.errors %}<li>{{ error }}</li>{% endfor %}
-                </ul>
-            {% endif %}
+            {{ field.errors }}
         </div>
     {% endfor %}
 
     {% if eventsongs %}
-    <div>
+    <div class="form-group">
         <label for="id_encore_song">Encore song</label>
         <select name="encore_song" id="id_encore_song">
             <option value="">&mdash;</option>
@@ -82,12 +78,15 @@
             {% endfor %}
         </div>
     </div>
-    <p><a href="{% url 'syncope:event_delete' url_username event.pk %}" class="btn-danger" style="display: inline-block; text-decoration: none;">Delete Event</a></p>
 
     <div class="save-bar" id="save-bar">
-        <button type="submit">Save</button>
+        <button type="submit" class="btn btn-primary">Save</button>
         <span class="dirty-note">Unsaved changes</span>
-        <a href="{% url 'syncope:event_detail' url_username object.pk %}?origin={{ origin_key }}" class="btn-primary" id="discard-btn" style="text-decoration:none; display:inline-block;">Discard</a>
+        <a href="{% url 'syncope:event_detail' url_username object.pk %}?origin={{ origin_key }}" class="btn btn-secondary" id="discard-btn">Discard</a>
+    </div>
+
+    <div class="form-actions">
+        <a href="{% url 'syncope:event_delete' url_username event.pk %}" class="btn btn-danger">Delete</a>
     </div>
 </form>
 

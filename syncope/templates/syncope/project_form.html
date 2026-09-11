@@ -39,8 +39,10 @@
         {% if form.end_date.errors %}<span class="error">{{ form.end_date.errors }}</span>{% endif %}
     </div>
 
-    <button type="submit">Save</button>
-    <a href="{%  url 'syncope:project_list' url_username %}">Cancel</a>
+    <div class="form-actions">
+        <a href="{% url 'syncope:project_list' url_username %}" class="btn btn-link">Cancel</a>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
 </form>
 
 {% endblock %}

@@ -1,43 +1,43 @@
 {% load static %}
 {% if songs %}
 <div class="table-container">
-<table>
+<table class="table">
     <thead>
         <tr>
             <th class="col-num">
-                <a href="?q={{ q }}&sort=id{% if current_sort == 'id' and not reverse %}&reverse=true{% endif %}" style="text-decoration: none; color: inherit;">
+                <a href="?q={{ q }}&sort=id{% if current_sort == 'id' and not reverse %}&reverse=true{% endif %}" class="sortable-header">
                     ID {% if current_sort == 'id' %}{% if not reverse %}↑{% else %}↓{% endif %}{% endif %}
                 </a>
             </th>
             <th title="Concerts / Performances">Con/Per</th>
             <th></th>
             <th class="sticky-col">
-                <a href="?q={{ q }}&sort=title{% if current_sort == 'title' and not reverse %}&reverse=true{% endif %}" style="text-decoration: none; color: inherit;">
+                <a href="?q={{ q }}&sort=title{% if current_sort == 'title' and not reverse %}&reverse=true{% endif %}" class="sortable-header">
                     Title {% if current_sort == 'title' %}{% if not reverse %}↑{% else %}↓{% endif %}{% endif %}
                 </a>
             </th>
             <th>
-                <a href="?q={{ q }}&sort=composer{% if current_sort == 'composer' and not reverse %}&reverse=true{% endif %}" style="text-decoration: none; color: inherit;">
+                <a href="?q={{ q }}&sort=composer{% if current_sort == 'composer' and not reverse %}&reverse=true{% endif %}" class="sortable-header">
                     Composer {% if current_sort == 'composer' %}{% if not reverse %}↑{% else %}↓{% endif %}{% endif %}
                 </a>
             </th>
             <th>
-                <a href="?q={{ q }}&sort=poet{% if current_sort == 'poet' and not reverse %}&reverse=true{% endif %}" style="text-decoration: none; color: inherit;">
+                <a href="?q={{ q }}&sort=poet{% if current_sort == 'poet' and not reverse %}&reverse=true{% endif %}" class="sortable-header">
                     Poet {% if current_sort == 'poet' %}{% if not reverse %}↑{% else %}↓{% endif %}{% endif %}
                 </a>
             </th>
             <th>
-                <a href="?q={{ q }}&sort=arranger{% if current_sort == 'arranger' and not reverse %}&reverse=true{% endif %}" style="text-decoration: none; color: inherit;">
+                <a href="?q={{ q }}&sort=arranger{% if current_sort == 'arranger' and not reverse %}&reverse=true{% endif %}" class="sortable-header">
                     Arranger {% if current_sort == 'arranger' %}{% if not reverse %}↑{% else %}↓{% endif %}{% endif %}
                 </a>
             </th>
             <th>
-                <a href="?q={{ q }}&sort=origin{% if current_sort == 'origin' and not reverse %}&reverse=true{% endif %}" style="text-decoration: none; color: inherit;">
+                <a href="?q={{ q }}&sort=origin{% if current_sort == 'origin' and not reverse %}&reverse=true{% endif %}" class="sortable-header">
                     Origin {% if current_sort == 'origin' %}{% if not reverse %}↑{% else %}↓{% endif %}{% endif %}
                 </a>
             </th>
             <th>
-                <a href="?q={{ q }}&sort=languagecode{% if current_sort == 'languagecode' and not reverse %}&reverse=true{% endif %}" style="text-decoration: none; color: inherit;">
+                <a href="?q={{ q }}&sort=languagecode{% if current_sort == 'languagecode' and not reverse %}&reverse=true{% endif %}" class="sortable-header">
                     Lang {% if current_sort == 'languagecode' %}{% if not reverse %}↑{% else %}↓{% endif %}{% endif %}
                 </a>
             </th>
@@ -76,7 +76,7 @@
             <td>{{ song.origin|default:"-" }}</td>
             <td>{{ song.languagecode.language_code|default:"-" }}</td>
             <td>{{ song.number_of_copies|default:"-" }}</td>
-            <td><a href="{%  url 'syncope:song_update' url_username song.pk %}">Edit</a></td>
+            <td><a href="{%  url 'syncope:song_update' url_username song.pk %}" class="btn btn-sm btn-link">Edit</a></td>
         </tr>
     {% endfor %}
     </tbody>

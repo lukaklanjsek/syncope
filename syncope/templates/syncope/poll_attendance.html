@@ -39,10 +39,7 @@
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.att-type-0 { background-color: #dfe6e9; } /* TBD */
-.att-type-1 { background-color: #c8f7c5; } /* YES */
-.att-type-2 { background-color: #ffeaa7; } /* MAYBE */
-.att-type-3 { background-color: #fab1a0; } /* NO */
+/* .att-type-0..3 (TBD/YES/MAYBE/NO) come from the global tokens in style.css */
 
 .comment-input {
     font-size: 0.8rem;
@@ -60,26 +57,18 @@
     vertical-align: middle;
 }
 
-table {
-    border-collapse: collapse;
-}
-
-th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-
-th {
-    background-color: #f8f9fa;
-    font-weight: 400;
-}
-
 th.bold-event-header {
     font-weight: 700 !important;
 }
 
 tbody td {
     text-align: center;
+}
+
+/* .table sets overflow:hidden for rounded corners, which breaks
+   position:sticky on .sticky-col below — undo it here. */
+.attendance-table {
+    overflow: visible;
 }
 
 @media (max-width: 768px) {
@@ -134,7 +123,7 @@ tbody td {
     {% csrf_token %}
 
     <div class="table-container">
-        <table>
+        <table class="table attendance-table">
             <thead>
                 {# Event Type Row #}
                 <tr>
@@ -232,9 +221,11 @@ tbody td {
         </table>
     </div>
 
-    <button type="submit" name="save_participant" value="{{ table_rows.0.person.id }}" style="margin-top: 1rem; padding: 0.5rem 1rem;">Save</button>
+    <div class="form-actions">
+        <a href="{% url 'syncope:poll_detail' url_username poll.pk %}" class="btn btn-link">Back</a>
+        <button type="submit" name="save_participant" value="{{ table_rows.0.person.id }}" class="btn btn-primary">Save</button>
+    </div>
 </form>
-<p><a href="{% url 'syncope:poll_detail' url_username poll.pk %}"><button style="margin-top: 1rem; padding: 0.5rem 1rem;">Back</button></a></p>
 <script>
 const CYCLE_ORDER = [0, 1, 2, 3];  // TBD, YES, MAYBE, NO
 const TYPE_META = {

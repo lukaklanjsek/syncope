@@ -7,27 +7,25 @@
 
 <p>
     {% if can_manage %}
-        <a href="{%  url 'syncope:song_update' url_username song.pk %}{% if request.GET.from_event %}?from_event={{ request.GET.from_event }}&origin={{ request.GET.origin }}{% endif %}">Edit Song</a>
-        &nbsp;|&nbsp;
-        <a href="{% url 'syncope:song_delete' url_username song.pk %}{% if request.GET.from_event %}?from_event={{ request.GET.from_event }}&origin={{ request.GET.origin }}{% endif %}" class="btn-danger" style="display: inline-block; text-decoration: none;">Delete Song</a>
-        &nbsp;|&nbsp;
+        <a href="{%  url 'syncope:song_update' url_username song.pk %}{% if request.GET.from_event %}?from_event={{ request.GET.from_event }}&origin={{ request.GET.origin }}{% endif %}" class="btn btn-link">Edit</a>
+        <a href="{% url 'syncope:song_delete' url_username song.pk %}{% if request.GET.from_event %}?from_event={{ request.GET.from_event }}&origin={{ request.GET.origin }}{% endif %}" class="btn btn-danger">Delete</a>
     {% endif %}
     {% if return_url %}
-        <button type="button" onclick="window.location.href='{{ return_url }}'">{{ return_label }}</button>
+        <a href="{{ return_url }}" class="btn btn-secondary">{{ return_label }}</a>
     {% else %}
-        <a href="{%  url 'syncope:song_list' url_username %}">Back to List</a>
+        <a href="{%  url 'syncope:song_list' url_username %}" class="btn btn-link">Back</a>
     {% endif %}
 </p>
 
 <p>
-    <button id="share-btn" style="width: auto; height: auto; padding: 2px 6px;" title="Copy link">
+    <button id="share-btn" class="btn btn-link btn-sm" title="Copy link">
         <img src="{% static 'syncope/images/copy.svg' %}" width="16" height="16" alt="Copy">
     </button>
-    <span id="share-result" style="margin-left: 0.5rem; font-size: 0.9rem;"></span>
+    <span id="share-result" class="share-result"></span>
 </p>
-<div style="display:none;">{% csrf_token %}</div>
+<div class="visually-hidden">{% csrf_token %}</div>
 
-<table>
+<table class="table-detail">
     <tr><th>Song ID</th><td>{{ song.internal_id|default:"-" }}</td></tr>
     <tr><th>Composer</th><td>
         {% if song.composer %}
@@ -75,7 +73,7 @@
 
 {% if all_song_resources %}
 <h3>Resources</h3>
-<table>
+<table class="table">
     <thead>
         <tr>
             <th></th>
@@ -92,11 +90,10 @@
             <td>{{ forloop.counter }}</td>
             <td>{{ res.icon }}</td>
             <td style="position: relative;">
-                <button class="copy-resource-btn" data-url="{{ res.share_url|default:res.url }}"
-                        style="width: auto; height: auto; padding: 2px 6px;" title="Copy link">
+                <button class="copy-resource-btn btn btn-link btn-sm" data-url="{{ res.share_url|default:res.url }}" title="Copy link">
                     <img src="{% static 'syncope/images/copy.svg' %}" width="16" height="16" alt="Copy">
                 </button>
-                <span class="copy-resource-result" style="position: absolute; top: 50%; left: 100%; transform: translateY(-50%); white-space: nowrap; font-size: 0.85rem; z-index: 10; background: white; padding: 2px 4px;"></span>
+                <span class="copy-resource-result" style="position: absolute; top: 50%; left: 100%; transform: translateY(-50%); white-space: nowrap; font-size: 0.85rem; z-index: 10; background: var(--color-surface); padding: 2px 4px; border-radius: var(--radius-sm); box-shadow: var(--shadow-sm);"></span>
             </td>
             <td><a href="{{ res.share_url|default:res.url }}" target="_blank" rel="noopener noreferrer">{{ res.url }}</a></td>
             <td>{{ res.desc }}</td>
@@ -148,13 +145,13 @@
 
 {% if events %}
 <h3>Events</h3>
-<table id="events-table">
+<table id="events-table" class="table">
     <thead>
         <tr>
             <th>#</th>
             <th>Name</th>
-            <th><a href="#" id="sort-type" style="text-decoration:none; color:inherit;">Type <span id="sort-type-indicator"></span></a></th>
-            <th><a href="#" id="sort-date" style="text-decoration:none; color:inherit;">Date <span id="sort-date-indicator"></span></a></th>
+            <th><a href="#" id="sort-type" class="sortable-header">Type <span id="sort-type-indicator"></span></a></th>
+            <th><a href="#" id="sort-date" class="sortable-header">Date <span id="sort-date-indicator"></span></a></th>
         </tr>
     </thead>
     <tbody>

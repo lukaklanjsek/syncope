@@ -2,16 +2,14 @@
 {% block title %}Invitations{% endblock %}
 
 {% block content %}
-<h2>Invitations</h2>
-
-{% if is_org %}
-<p>
-    <a href="{% url 'syncope:invitation_new' url_username %}"><button>+ new invite</button></a>
-
-</p>
-{% else %}
-<p>    <a href="{% url 'syncope:invitation_new' url_username %}">+ new request</a></p>
-{% endif %}
+<div class="section-header">
+    <h2>Invitations</h2>
+    {% if is_org %}
+    <a href="{% url 'syncope:invitation_new' url_username %}" class="btn btn-primary" title="Add new invite">+ Add</a>
+    {% else %}
+    <a href="{% url 'syncope:invitation_new' url_username %}" class="btn btn-primary" title="Add new invitation request">+ Add</a>
+    {% endif %}
+</div>
 
 <h3>Pending Invitations</h3>
 <table>

@@ -882,6 +882,7 @@ class OrgMemberEditView(DraftMixin, FormView):  # OrgMemberMixin,
 
         is_admin = viewer_role.filter(id=Role.ADMIN).exists()
         is_owner = self.person.user == request.user
+        self.is_admin = is_admin
 
 
 
@@ -955,6 +956,11 @@ class OrgMemberEditView(DraftMixin, FormView):  # OrgMemberMixin,
         if extra:
             url = with_origin(add_query_param(url, extra), origin_key)
         return url
+
+    def _person_delete_url(self):
+        context_type = self.kwargs.get('context_type')
+        delete_url_name = _DELETE_URL_NAMES.get(context_type, 'syncope:org_member_delete')
+        return reverse(delete_url_name, kwargs={'username': self.kwargs['username'], 'pk': self.person.pk})
 
     def _return_target(self):
         from_song_pk, from_event_pk, origin_key = self._from_song_event_and_origin()

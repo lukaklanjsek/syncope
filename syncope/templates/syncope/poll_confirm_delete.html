@@ -10,8 +10,10 @@
 {% if is_admin %}
 <form method="post">
     {% csrf_token %}
-    <button type="submit" class="btn btn-danger">Delete</button>
-    <a href="{% url 'syncope:poll_detail' url_username poll.pk %}">Cancel</a>
+    <div class="form-actions">
+        <a href="{% url 'syncope:poll_detail' url_username poll.pk %}" class="btn btn-link">Cancel</a>
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </div>
 </form>
 {% else %}
 <p><a href="{% url 'syncope:poll_detail' url_username poll.pk %}">Back to Poll</a></p>

@@ -7,6 +7,9 @@
 <style>
 .attendance-table {
     border-collapse: collapse;
+    /* .table sets overflow:hidden for rounded corners, which breaks
+       position:sticky on .sticky-col below — undo it here. */
+    overflow: visible;
 }
 
 .sticky-col {
@@ -25,6 +28,24 @@
     width: 20px;
 }
 
+.event-header-cell {
+    height: 70px;
+    padding: 5px;
+    font-weight: normal;
+    vertical-align: bottom;
+}
+
+.bold-event-header {
+    font-weight: bold;
+}
+
+.rotated-header {
+    transform: rotate(-90deg);
+    width: 10px;
+    white-space: nowrap;
+    font-size: 0.8rem;
+}
+
 .attendance-cell {
     width: 40px;
     text-align: center;
@@ -35,10 +56,7 @@
     user-select: none;
 }
 
-.att-type-0 { background-color: #dfe6e9; } /* NO ANSWER */
-.att-type-1 { background-color: #c8f7c5; } /* YES */
-.att-type-2 { background-color: #ffeaa7; } /* MAYBE */
-.att-type-3 { background-color: #fab1a0; } /* NO */
+/* .att-type-0..3 (NO ANSWER/YES/MAYBE/NO) come from the global tokens in style.css */
 
 .comment-display {
     font-size: 0.65rem;
@@ -82,18 +100,17 @@
 
 {% if table_rows %}
 <div class="table-container">
-    <table class="attendance-table">
+    <table class="table table-grouped attendance-table">
         <thead>
             <tr>
-                <th></th>
+                <th class="col-num">#</th>
                 <th>🔗</th>
                 <th class="sticky-col">Person</th>
                 {% for pe in poll_events %}
-                <th class="event-col" style="vertical-align: bottom; padding: 5px; font-weight: normal; {% if pe.event_type.id != 1 %}font-weight: bold; {% endif %}"
-                    title="{% if pe.event_type.id == 1 %}{{ pe.name }}{% else %}{{ pe.event_type }}&#10;{{ pe.name }}{% endif %}">
-                    <div style="writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; font-size: 0.8rem; line-height: 0.7rem;">
-                        {% if pe.same_date %}<span data-dt="{{ pe.started_at|date:'c' }}" data-dt-fmt="date">{{ pe.started_at|date:"d M" }}</span>{% else %}<span data-dt="{{ pe.started_at|date:'c' }}" data-dt-fmt="date">{{ pe.started_at|date:"d M" }}</span> – <span data-dt="{{ pe.ended_at|date:'c' }}" data-dt-fmt="date">{{ pe.ended_at|date:"d M" }}</span>{% endif %} <span data-dt="{{ pe.started_at|date:'c' }}" data-dt-fmt="time">{{ pe.started_at|date:"H:i" }}</span>{% if pe.location %} {{ pe.location|truncatechars:10 }}{% endif %}
-
+                <th class="event-col event-header-cell {% if pe.event_type.id != 1 %}bold-event-header{% endif %}"
+                    title="{% if pe.event_type.id == 1 %}{{ pe.name }}{% else %}{{ pe.event_type }}&#10;{{ pe.name }}{% endif %}&#10;{{ pe.started_at|date:"H:i" }}{% if pe.location %}&#10;{{ pe.location }}{% endif %}">
+                    <div class="rotated-header">
+                        {% if pe.same_date %}<span data-dt="{{ pe.started_at|date:'c' }}" data-dt-fmt="date">{{ pe.started_at|date:"d M" }}</span>{% else %}<span data-dt="{{ pe.started_at|date:'c' }}" data-dt-fmt="date">{{ pe.started_at|date:"d M" }}</span> – <span data-dt="{{ pe.ended_at|date:'c' }}" data-dt-fmt="date">{{ pe.ended_at|date:"d M" }}</span>{% endif %}
                     </div>
                 </th>
                 {% endfor %}
@@ -103,8 +120,8 @@
         <tbody>
             {% for group in grouped_table_rows %}
             {% for row in group.items %}
-            <tr {% if forloop.first and not forloop.parentloop.first %}style="border-top: 3px solid #333;"{% endif %}>
-                <td>{{ forloop.counter }}</td>
+            <tr {% if forloop.first and not forloop.parentloop.first %}class="group-start"{% endif %}>
+                <td class="col-num">{{ forloop.counter }}</td>
                 <td style="position: relative;">
 
                     <button class="share-person-btn" data-type="poll_person" data-person-pk="{{ row.person.pk }}" style="width: auto; height: auto; padding: 2px 6px;" title="Copy link"><img src="{% static 'syncope/images/copy.svg' %}" width="16" height="16" alt="Copy"></button>
@@ -136,11 +153,11 @@
 <div>
     <p>Admin links:
         <br>
-        <form method="post" action="{% url 'syncope:poll_delete' url_username poll.pk %}" style="display:inline;" onsubmit="return confirm('Delete poll &quot;{{ poll.title }}&quot;? This cannot be undone.')">
+        <form method="post" action="{% url 'syncope:poll_delete' url_username poll.pk %}" class="inline-form" onsubmit="return confirm('Delete poll &quot;{{ poll.title }}&quot;? This cannot be undone.')">
             {% csrf_token %}
-            <button type="submit" class="btn-danger">Delete the entire poll</button>
+            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
         </form>
-        <br><button><a href="{% url 'syncope:poll_list' url_username %}">Back to list of polls</a></button></p>
+        <br><a href="{% url 'syncope:poll_list' url_username %}" class="btn btn-link">Back</a></p>
 </div>
 {% endif %}
 

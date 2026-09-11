@@ -1,7 +1,13 @@
+{% extends "syncope/base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
 <h2>Login</h2>
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
-  <button type="submit">Login</button>
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">Login</button>
+  </div>
 </form>
-<p><a href="{% url 'syncope:signup' %}">Sign up form</a> </p>
+<p><a href="{% url 'syncope:signup' %}">Sign up form</a></p>
+{% endblock %}

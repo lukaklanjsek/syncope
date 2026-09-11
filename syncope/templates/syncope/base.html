@@ -20,25 +20,30 @@
 <body>
     <div class="grid-container">
         <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <img src="{% static 'syncope/images/sitelogo.png' %}" alt="" class="sidebar-logo">
+                <p class="sidebar-brand">Syncope</p>
+            </div>
             {% if user.is_authenticated %}
                 {% load url_tags %}
-                <p>{{ user.username }}</p>
+                <p class="sidebar-user">{{ user.username }}</p>
                 <ul class="menu-links">
-                    <li><a href="{%  url 'syncope:person_update' user.username %}" {% if request.resolver_match.url_name == 'person_update' %}class="active"{% endif %}>Update profile</a></li>
                     <li><a href="{%  url 'syncope:home' %}" {% if request.resolver_match.url_name == 'home' %}class="active"{% endif %}>Home</a></li>
+                    <li><a href="{%  url 'syncope:person_update' user.username %}" {% if request.resolver_match.url_name == 'person_update' %}class="active"{% endif %}>Update profile</a></li>
                     <li><a href="{%  url 'syncope:song_list' user.username %}" {% if request.resolver_match.url_name|url_in:'song_list,song_detail,song_new,song_update,song_delete,song_quotes' and url_username == user.username %}class="active"{% endif %}>Songs</a></li>
-                    <li><a href="{%  url 'syncope:invitation_list' user.username %}" {% if request.resolver_match.url_name|url_in:'invitation_list,invitation_new,invitation_detail' and url_username == user.username %}class="active"{% endif %}>Invitations{% if pending_invitations %} ({{ pending_invitations }}){% endif %}</a></li>
+                    <li><a href="{%  url 'syncope:invitation_list' user.username %}" {% if request.resolver_match.url_name|url_in:'invitation_list,invitation_new,invitation_detail' and url_username == user.username %}class="active"{% endif %}>Invitations{% if pending_invitations %} <span class="badge nav-badge">{{ pending_invitations }}</span>{% endif %}</a></li>
 
                     <li>
-                        <p>Groups:</p>
+                        <p class="section-label">Groups</p>
                         <ul class="org-list">
                             {% for membership in memberships %}
                                 {% with org=membership.user.organizations.first %}
                                     {% if org %}
                                         <li class="org-item {% if url_username == org.user.username %}active{% endif %}">
                                             <a href="{%  url 'syncope:org_dashboard' org.user.username %}" {% if url_username == org.user.username and request.resolver_match.url_name|url_in:'org_dashboard,org_edit,org_delete' %}class="active"{% endif %}>
-                                                {{ org.name }} ({{ membership.person.first_name }} - {{ membership.person.roles.all|join:", " }})
+                                                {{ org.name }}
                                             </a>
+                                            <small class="org-meta">{{ membership.person.first_name }} · {{ membership.person.roles.all|join:", " }}</small>
                                             <ul class="org-submenu">
                                                 <!-- Songs visible to ADMIN and MEMBER -->
                                                 {% if ADMIN_ROLE in membership.person.roles.all or MEMBER_ROLE in membership.person.roles.all %}
@@ -53,28 +58,29 @@
                                                 {% if ADMIN_ROLE in membership.person.roles.all %}
 
                                                     <li><a href="{%  url 'syncope:import_hub' username=org.user.username %}" {% if url_username == org.user.username and request.resolver_match.url_name|url_in:'import_hub,import_dashboard,import_combine' %}class="active"{% endif %}>Import Data</a></li>
-                                                    <li><a href="{%  url 'syncope:invitation_list' org.user.username %}" {% if url_username == org.user.username and request.resolver_match.url_name|url_in:'invitation_list,invitation_new,invitation_detail' %}class="active"{% endif %}>Invitations{% if membership.pending_invitations %} ({{ membership.pending_invitations }}){% endif %}</a></li>
+                                                    <li><a href="{%  url 'syncope:invitation_list' org.user.username %}" {% if url_username == org.user.username and request.resolver_match.url_name|url_in:'invitation_list,invitation_new,invitation_detail' %}class="active"{% endif %}>Invitations{% if membership.pending_invitations %} <span class="badge nav-badge">{{ membership.pending_invitations }}</span>{% endif %}</a></li>
                                                 {% endif %}
                                             </ul>
                                         </li>
                                     {% endif %}
                                 {% endwith %}
                             {% empty %}
-                                <li>No groups yet</li>
+                                <li class="org-empty">No groups yet</li>
                             {% endfor %}
                         </ul>
                     </li>
-
-                    <li>
-                        <form method="post" action="{% url 'logout' %}" onclick="return confirm('You want to log out?')" style="width: fit-content;">
-                            {% csrf_token %}
-                            <button type="submit">Logout</button>
-                        </form>
-                    </li>
                 </ul>
+                <div class="sidebar-footer">
+                    <form method="post" action="{% url 'logout' %}" onclick="return confirm('You want to log out?')">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary btn-block">Log out</button>
+                    </form>
+                </div>
             {% else %}
-                <a href="{%  url 'syncope:signup' %}">Sign Up</a>
-                <a href="{%  url 'syncope:login' %}">Login</a>
+                <div class="sidebar-footer sidebar-guest-links">
+                    <a href="{%  url 'syncope:signup' %}" class="btn btn-primary btn-block">Signup</a>
+                    <a href="{%  url 'syncope:login' %}" class="btn btn-secondary btn-block">Login</a>
+                </div>
             {% endif %}
         </nav>
 
@@ -85,9 +91,9 @@
             </div>
             <div class="main-content">
                 {% if messages %}
-                <div style="margin-bottom: 1rem;">
+                <div class="messages">
                     {% for message in messages %}
-                    <div style="padding: 12px; background-color: {% if message.tags == 'success' %}#d4edda{% elif message.tags == 'warning' %}#ffeaa7{% elif message.tags == 'error' or message.tags == 'danger' %}#f8d7da{% else %}#d1ecf1{% endif %}; border: 1px solid {% if message.tags == 'success' %}#c3e6cb{% elif message.tags == 'warning' %}#ffd36f{% elif message.tags == 'error' or message.tags == 'danger' %}#f5c6cb{% else %}#bee5eb{% endif %}; border-radius: 4px; color: {% if message.tags == 'success' %}#155724{% elif message.tags == 'warning' %}#5f4c0b{% elif message.tags == 'error' or message.tags == 'danger' %}#721c24{% else %}#0c5460{% endif %};">
+                    <div class="alert alert-{{ message.tags }}">
                         {{ message }}
                     </div>
                     {% endfor %}

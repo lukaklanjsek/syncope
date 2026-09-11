@@ -80,10 +80,10 @@
 
 <h2 class="event-title"><span class="event-title-text"> <span title="Title">{{ event.name }}</span> <small><span title="Type"> | {{ event.event_type }}</span></small></span>
     <span class="share-controls">
-        <button id="share-btn" style="width: auto; height: auto; padding: 2px 6px;" title="Copy link">
+        <button id="share-btn" class="btn btn-link btn-sm" title="Copy link">
             <img src="{% static 'syncope/images/link.svg' %}" width="16" height="16" alt="Link">
         </button>
-        <span id="share-result" style="margin-left: 0.5rem; font-size: 0.9rem;"></span>
+        <span id="share-result" class="share-result"></span>
     </span>
 </h2>
 <p class="event-summary">{% if event.location %}Location: {{ event.location }}<br>{% endif %}
@@ -209,7 +209,7 @@ Ends: <span class="dt-full" data-dt="{{ event.ended_at|date:'c' }}" data-dt-fmt=
 </div>
 
 <div class="bottom-bar">
-    <a href="{{ breadcrumbs.0.url }}" class="btn-primary" style="text-decoration:none; display:inline-block;">Return</a>
+    <a href="{{ breadcrumbs.0.url }}" class="btn btn-primary">Return</a>
 </div>
 
 {% block extra_js %}

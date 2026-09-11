@@ -7,7 +7,7 @@
     .attendance-table thead th {
         position: sticky;
         top: 0;
-        background-color: #fff;
+        background-color: var(--color-surface);
         z-index: 1;
     }
     .attendance-chip {
@@ -26,13 +26,13 @@
     .remove-attendance-btn {
         border: none;
         background: none;
-        color: #999;
+        color: var(--color-text-muted);
         font-size: 1.1rem;
         cursor: pointer;
         line-height: 1;
         padding: 0.25rem 0.4rem;
     }
-    .remove-attendance-btn:hover { color: #c0392b; }
+    .remove-attendance-btn:hover { color: var(--color-danger); }
     .search-result-row { padding: 0.4rem 0; }
     .search-spinner {
         position: absolute;
@@ -42,8 +42,8 @@
         width: 16px;
         height: 16px;
         border-radius: 50%;
-        border: 2px solid #ddd;
-        border-top-color: #888;
+        border: 2px solid var(--color-border);
+        border-top-color: var(--color-text-muted);
         animation: spin 0.7s linear infinite;
         opacity: 0;
         pointer-events: none;
@@ -57,8 +57,8 @@
         }
     }
     .add-item-btn {
-        border: 1px solid #ccc;
-        background-color: #f5f5f5;
+        border: 1px solid var(--color-border);
+        background-color: var(--color-bg-subtle);
         border-radius: 2px;
         cursor: pointer;
         min-width: 1.4rem;
@@ -68,7 +68,7 @@
     tr.staged-add,
     tr.type-changed,
     tr.pending-remove {
-        background-color: #fff3cd;
+        background-color: var(--color-warning-bg);
     }
     tr.pending-remove td {
         text-decoration: line-through;
@@ -118,8 +118,8 @@
             <span class="search-spinner" id="participant-search-spinner"></span>
         </p>
         <p style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-            <button type="button" id="participant-search-clear">Clear search</button>
-            <button type="submit" form="attendance-form" name="action" value="new_person" title="Create new person">+ New Person</button>
+            <button type="button" id="participant-search-clear" class="btn btn-sm btn-secondary">Clear</button>
+            <button type="submit" form="attendance-form" name="action" value="new_person" class="btn btn-sm btn-secondary" title="Create new person">New</button>
         </p>
         <p style="display:flex; align-items:center; gap:0.5rem; margin-top:1rem;">
             <strong>Attendance:</strong>

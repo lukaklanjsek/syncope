@@ -1,3 +1,120 @@
+/* =====================================================
+   Design tokens & fonts
+   To restyle the app (colors, fonts, spacing, buttons), edit
+   the values below — see docs/FRONTEND_GUIDE.md for the guide.
+   ===================================================== */
+@font-face {
+    font-family: "EB Garamond";
+    src: url("fonts/eb-garamond-latin.woff2") format("woff2");
+    font-weight: 400 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Inter";
+    src: url("fonts/inter-latin.woff2") format("woff2");
+    font-weight: 400 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    /* Color */
+    --color-bg: #f4f1ea;
+    --color-bg-subtle: #ebe6d9;
+    --color-surface: #ffffff;
+    --color-border: #e5dfd6;
+    --color-border-subtle: #efe9dd;
+    --color-text: #2c2a28;
+    --color-text-muted: #5c574f;
+    --color-text-on-accent: #ffffff;
+
+    --color-primary: #7a6140;
+    --color-primary-hover: #63502f;
+    --color-danger: #c0392b;
+    --color-danger-hover: #a3301f;
+
+    /* Dedicated dark-surface color for the sidebar and other dark UI chrome
+       (table headers) — kept separate from --color-text so a "text" token
+       never doubles as a background. */
+    --color-ink: #3e3a34;
+
+    --color-success-bg: #e8f5e9;
+    --color-success-border: #c8e6c9;
+    --color-success-text: #2e7d32;
+    --color-error-bg: #fdecea;
+    --color-error-border: #f5c6cb;
+    --color-error-text: #721c24;
+    --color-warning-bg: #fff8e1;
+    --color-warning-border: #ffe082;
+    --color-warning-text: #5f4c0b;
+    --color-info-bg: #e3f2fd;
+    --color-info-border: #bbdefb;
+    --color-info-text: #0c5460;
+
+    /* Attendance status colors, keyed by the real AttendanceType pk (0=TBD, 1=Present,
+       2=Work/School, 3=Illness, 4=Private/Vacation). Shared by the per-event attendance
+       subpage's status chips. */
+    --color-attendance-0: #dfe6e9;
+    --color-attendance-1: #c8f7c5;
+    --color-attendance-2: #ffeaa7;
+    --color-attendance-3: #fab1a0;
+    --color-attendance-4: #a29bfe;
+
+    /* Typography */
+    --font-heading: "EB Garamond", Georgia, serif;
+    --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-size-sm: 0.85rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.15rem;
+    --font-size-xl: 1.5rem;
+
+    /* Spacing */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+
+    /* Shape / motion */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --shadow-sm: 0 1px 3px rgba(44, 42, 40, 0.08);
+    --shadow-md: 0 2px 8px rgba(44, 42, 40, 0.1);
+    --transition-fast: 0.2s ease;
+    --sidebar-width: 250px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --transition-fast: 0s;
+    }
+}
+
+body {
+    font-family: var(--font-body);
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    background-image: radial-gradient(rgba(44, 42, 40, 0.05) 1px, transparent 1px);
+    background-size: 6px 6px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+}
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--color-primary-hover);
+    text-decoration: underline;
+}
 
 * {
     box-sizing: border-box;
@@ -9,20 +126,49 @@ body {
 
 .grid-container {
     display: grid;
-    grid-template-columns: 250px 1fr;
+    grid-template-columns: var(--sidebar-width) 1fr;
     grid-template-areas: "sidebar main";
     min-height: 100vh;
-    transition: grid-template-columns 0.2s ease;
+    transition: grid-template-columns var(--transition-fast);
 
 }
 
 .sidebar {
     grid-area: sidebar;
-    background-color: gray;
-    color: white;
-    padding: 1rem;
+    background-color: var(--color-ink);
+    color: rgba(255, 255, 255, 0.85);
+    padding: 0;
     overflow-y: auto;
-    transition: transform 0.2s ease;
+    transition: transform var(--transition-fast);
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    padding: var(--space-5) var(--space-4) var(--space-4);
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: var(--space-3);
+}
+
+.sidebar-logo {
+    width: 48px;
+    height: auto;
+}
+
+.sidebar-brand {
+    font-family: var(--font-heading);
+    font-size: var(--font-size-xl);
+    color: var(--color-text-on-accent);
+    margin: var(--space-1) 0 0;
+}
+
+.sidebar-user {
+    padding: 0 var(--space-4) var(--space-3);
+    font-size: var(--font-size-sm);
+    color: rgba(255, 255, 255, 0.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin: 0 0 var(--space-2);
 }
 
 .main {
@@ -38,32 +184,133 @@ body {
 }
 
 .menu-links {
-    padding-left: 0;
+    padding: 0 var(--space-3);
+    flex: 1;
 }
 
 .menu-links li {
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--space-1);
 }
 
 .menu-links a {
-    color: white;
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
-    padding: 0.5rem;
-    border-radius: 4px;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    display: block;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.menu-links a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--color-text-on-accent);
 }
 
 .menu-links a.active,
 .org-submenu a.active {
-    font-weight: bold;
+    font-weight: 500;
     background-color: rgba(255, 255, 255, 0.2);
+    color: var(--color-text-on-accent);
+}
+
+/* .nav-badge composes with .badge (defined further down) for the pill shape —
+   this just overrides color/size/spacing for the dark sidebar. */
+.nav-badge {
+    background-color: var(--color-primary);
+    color: var(--color-text-on-accent);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 1px 6px;
+    margin-left: var(--space-1);
+}
+
+.section-label {
+    margin: 0;
+    padding: var(--space-3) var(--space-3) var(--space-1);
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.4);
 }
 
 .org-list {
-    padding-left: 0.5rem;
+    padding-left: 0;
+}
+
+.org-item {
+    margin-bottom: var(--space-1);
+}
+
+.org-item.active > a {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--color-text-on-accent);
+}
+
+.org-item.active > a::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: var(--space-2);
+    border-radius: 50%;
+    background-color: var(--color-text-on-accent);
+}
+
+.org-meta {
+    display: block;
+    padding: 0 var(--space-3);
+    margin-bottom: var(--space-1);
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.75rem;
 }
 
 .org-submenu {
-    padding-left: 1rem;
+    padding-left: var(--space-4);
+    margin-top: 2px;
+}
+
+.org-submenu a {
+    font-size: 0.85rem;
+    padding: 0.35rem var(--space-3);
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.org-empty {
+    padding: var(--space-2) var(--space-3);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: var(--font-size-sm);
+}
+
+.sidebar-footer {
+    padding: var(--space-3) var(--space-4);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin-top: auto;
+}
+
+.sidebar-footer form {
+    display: inline;
+}
+
+/* .btn-secondary assumes a light surface (border/text colors made for that) —
+   override for the dark sidebar so Login/Logout stay visible. */
+.sidebar .btn-secondary {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.sidebar .btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--color-text-on-accent);
+}
+
+.sidebar-guest-links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    border-top: none;
+    margin-top: 0;
 }
 
 .main-content {
@@ -81,6 +328,27 @@ body {
     flex: 1;
 }
 
+.footer {
+    padding: 1.5rem 2.5rem;
+    border-top: 1px solid var(--color-border);
+    position: relative;
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+}
+
+.footer::before {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 1.5px;
+    background: var(--color-primary);
+    margin-bottom: 1rem;
+}
+
+.footer-info {
+    max-width: 1200px;
+}
+
 .table-container {
     overflow-x: auto;
 }
@@ -88,7 +356,7 @@ body {
 .sticky-col {
     position: sticky;
     left: 0;
-    background-color: #f8f9fa;
+    background-color: var(--color-surface);
     z-index: 1;
     max-width: 140px;
     overflow: hidden;
@@ -96,14 +364,12 @@ body {
     white-space: nowrap;
 }
 
-/* Attendance status colors, keyed by the real AttendanceType pk (0=TBD, 1=Present,
-   2=Work/School, 3=Illness, 4=Private/Vacation). Shared by the per-event attendance
-   subpage's status chips. */
-.att-type-0 { background-color: #dfe6e9; }
-.att-type-1 { background-color: #c8f7c5; }
-.att-type-2 { background-color: #ffeaa7; }
-.att-type-3 { background-color: #fab1a0; }
-.att-type-4 { background-color: #a29bfe; }
+/* See the --color-attendance-* token comment above for the pk mapping. */
+.att-type-0 { background-color: var(--color-attendance-0); }
+.att-type-1 { background-color: var(--color-attendance-1); }
+.att-type-2 { background-color: var(--color-attendance-2); }
+.att-type-3 { background-color: var(--color-attendance-3); }
+.att-type-4 { background-color: var(--color-attendance-4); }
 
 .col-num {
     text-align: right;
@@ -137,8 +403,8 @@ body {
 .save-bar {
     position: sticky;
     bottom: 0;
-    background-color: #f5f5f5;
-    border-top: 1px solid #ccc;
+    background-color: var(--color-bg-subtle);
+    border-top: 1px solid var(--color-border);
     padding: 0.75rem 1rem;
     margin-top: 1rem;
     display: flex;
@@ -147,13 +413,13 @@ body {
 }
 
 .save-bar.dirty {
-    background-color: #fff3cd;
-    border-top-color: #ffc107;
+    background-color: var(--color-warning-bg);
+    border-top-color: var(--color-warning-border);
 }
 
 .save-bar .dirty-note {
     font-size: 0.85rem;
-    color: #856404;
+    color: var(--color-warning-text);
 }
 
 
@@ -171,8 +437,8 @@ body {
         top: 0;
         z-index: 1001;
         padding: 0.5rem 1rem;
-        background-color: #fff;
-        border-bottom: 1px solid #eee;
+        background-color: var(--color-surface);
+        border-bottom: 1px solid var(--color-border-subtle);
     }
 
     .mobile-topbar .breadcrumbs {
@@ -212,6 +478,15 @@ body {
         min-height: 44px;
     }
 
+    .form-actions {
+        justify-content: space-between;
+    }
+
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
     .save-bar {
         position: fixed;
         left: 0;
@@ -228,10 +503,10 @@ body {
         top: 0;
         left: 0;
         height: 100vh;
-        width: 250px;
+        width: var(--sidebar-width);
         transform: translateX(-100%);
         z-index: 1000;
-        box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        box-shadow: var(--shadow-md);
     }
 
     .grid-container.menu-visible .sidebar {
@@ -244,11 +519,11 @@ body {
         padding: 0;
         font-size: 1.5rem;
         cursor: pointer;
-        color: gray;
+        color: var(--color-text-muted);
     }
 
     .mobile-toggle.is-open {
-        color: white;
+        color: var(--color-text-on-accent);
     }
 
     .btn-full {
@@ -279,6 +554,10 @@ body {
         padding: 1rem;
     }
 
+    .footer {
+        padding: 1rem;
+    }
+
     textarea[name="location"],
     textarea[name="description"],
     textarea[name="details"],
@@ -303,62 +582,39 @@ body {
 }
 
 .messages {
-    margin-bottom: 1rem;
+    margin-bottom: var(--space-4);
 }
 
 .alert {
-    padding: 12px;
-    margin-bottom: 0.5rem;
+    padding: var(--space-3) var(--space-4);
+    margin-bottom: var(--space-2);
     border: 1px solid;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
 }
 
 .alert-success {
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-    color: #155724;
+    background-color: var(--color-success-bg);
+    border-color: var(--color-success-border);
+    color: var(--color-success-text);
 }
 
 .alert-error,
 .alert-danger {
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-    color: #721c24;
+    background-color: var(--color-error-bg);
+    border-color: var(--color-error-border);
+    color: var(--color-error-text);
 }
 
 .alert-warning {
-    background-color: #ffeaa7;
-    border-color: #ffd36f;
-    color: #5f4c0b;
+    background-color: var(--color-warning-bg);
+    border-color: var(--color-warning-border);
+    color: var(--color-warning-text);
 }
 
 .alert-info {
-    background-color: #d1ecf1;
-    border-color: #bee5eb;
-    color: #0c5460;
-}
-
-.btn-primary {
-    background-color: #a8b5c5;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.btn-primary:hover {
-    background-color: #5a6268;
-}
-
-.btn-danger {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
+    background-color: var(--color-info-bg);
+    border-color: var(--color-info-border);
+    color: var(--color-info-text);
 }
 
 #dirty-actions {
@@ -366,9 +622,9 @@ body {
 }
 
 .breadcrumbs {
-    margin-bottom: 1rem;
-    font-size: 0.85rem;
-    color: #6c757d;
+    margin-bottom: var(--space-4);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
 }
 
 .breadcrumbs ol {
@@ -387,11 +643,11 @@ body {
 .breadcrumbs li + li::before {
     content: "›";
     margin: 0 0.4rem;
-    color: #adb5bd;
+    color: var(--color-border);
 }
 
 .breadcrumbs a {
-    color: #6c757d;
+    color: var(--color-text-muted);
     text-decoration: none;
 }
 
@@ -400,6 +656,355 @@ body {
 }
 
 .breadcrumbs [aria-current="page"] {
-    color: #212529;
+    color: var(--color-text);
     font-weight: 500;
+}
+
+/* --- Buttons --- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-sm);
+    border: 1.5px solid transparent;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: nowrap;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.btn:hover {
+    text-decoration: none;
+}
+
+.btn:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-text-on-accent);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-hover);
+    color: var(--color-text-on-accent);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border-color: var(--color-border);
+    color: var(--color-text);
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-bg-subtle);
+}
+
+.btn-danger {
+    background-color: transparent;
+    border-color: var(--color-danger);
+    color: var(--color-danger);
+}
+
+.btn-danger:hover {
+    background-color: var(--color-danger);
+    color: var(--color-text-on-accent);
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--color-primary);
+    font-size: 0.9rem;
+}
+
+.btn-link:hover {
+    color: var(--color-primary-hover);
+    text-decoration: underline;
+}
+
+.btn-sm {
+    padding: 0.3rem 0.65rem;
+    font-size: 0.82rem;
+}
+
+.btn-block {
+    width: 100%;
+    justify-content: center;
+}
+
+/* Feedback text next to a #share-btn (Copying.../Copied/Failed) — see FRONTEND_GUIDE.md. */
+.share-result {
+    margin-left: var(--space-1);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+}
+
+/* Button row for form submit/cancel pairs: secondary/cancel left, primary right
+   (DOM order drives this — put the cancel link/button before the primary one).
+   On mobile the row spreads to the full width (cancel far left, primary far
+   right) instead of clustering right like desktop — see the 768px media query. */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+}
+
+/* --- Forms --- */
+.form-group {
+    margin-bottom: var(--space-4);
+}
+
+.form-group label,
+.form-label,
+form p label {
+    display: block;
+    margin-bottom: var(--space-1);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--color-text-muted);
+}
+
+/* Generic selectors for Django's default CheckboxSelectMultiple/RadioSelect
+   output (no custom widget template this round — see FRONTEND_GUIDE.md). */
+input[type="checkbox"],
+input[type="radio"] {
+    margin-right: var(--space-1);
+}
+
+.form-error,
+.error {
+    color: var(--color-error-text);
+    font-size: 0.82rem;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: var(--space-3) 0;
+    flex-wrap: wrap;
+}
+
+.search-form input[type="text"] {
+    padding: var(--space-2) var(--space-3);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    flex: 1;
+    min-width: 200px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="url"],
+.form-group input[type="number"],
+.form-group input[type="date"],
+.form-group input[type="tel"],
+.form-group input[type="search"],
+.form-group select,
+.form-group textarea,
+form p input[type="text"],
+form p input[type="email"],
+form p input[type="password"],
+form p input[type="url"],
+form p input[type="number"],
+form p input[type="date"],
+form p input[type="tel"],
+form p input[type="search"],
+form p select,
+form p textarea {
+    width: 100%;
+    max-width: 480px;
+    padding: var(--space-2) var(--space-3);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--color-text);
+    background-color: var(--color-surface);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus,
+form p input:focus,
+form p select:focus,
+form p textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 15%, transparent);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-help,
+.form-group .helptext,
+form p .helptext {
+    margin: var(--space-1) 0 0;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+}
+
+.form-group ul.errorlist,
+form p ul.errorlist {
+    list-style: none;
+    margin: var(--space-1) 0 0;
+    padding: 0;
+}
+
+.form-group ul.errorlist li,
+form p ul.errorlist li {
+    color: var(--color-error-text);
+    font-size: 0.82rem;
+}
+
+/* --- Cards --- */
+.card {
+    padding: var(--space-5);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+}
+
+/* --- Tables --- */
+.table {
+    width: 100%;
+    margin-bottom: var(--space-5);
+    border-collapse: collapse;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    font-size: 0.9rem;
+    overflow: hidden;
+}
+
+.table thead th {
+    padding: var(--space-3);
+    background-color: var(--color-ink);
+    color: var(--color-text-on-accent);
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.table tbody td {
+    padding: var(--space-3);
+    border-bottom: 1px solid var(--color-border-subtle);
+    vertical-align: middle;
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: var(--color-bg-subtle);
+}
+
+/* Replaces the hand-copied "first row of group" inline style
+   ({% if forloop.first and not forloop.parentloop.first %}style="border-top:3px solid #333"{% endif %}) */
+.table-grouped tbody tr.group-start td {
+    border-top: 2px solid var(--color-border);
+}
+
+.totals-row td {
+    border-top: 2px solid var(--color-border);
+}
+
+.table-detail {
+    width: 100%;
+    max-width: 640px;
+    margin-bottom: var(--space-5);
+    font-size: 0.92rem;
+}
+
+.table-detail tr td {
+    padding: var(--space-2) var(--space-1);
+    vertical-align: baseline;
+}
+
+.table-detail tr th {
+    width: 120px;
+    padding: var(--space-2) var(--space-4) var(--space-2) 0;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+/* --- Utilities ---
+   .visually-hidden here is a hard display:none (not the accessible-but-present
+   clip technique) — only used on CSRF-only wrapper divs with no meaningful content. */
+.visually-hidden {
+    display: none;
+}
+
+.inline-form {
+    display: inline;
+}
+
+.sortable-header {
+    color: inherit;
+    text-decoration: none;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+    flex-wrap: wrap;
+}
+
+.section-header h3,
+.section-header h2 {
+    margin: 0;
+}
+
+.badge {
+    display: inline-block;
+    padding: 1px 8px;
+    background-color: var(--color-bg-subtle);
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: 999px;
+}
+
+.table-narrow {
+    max-width: 700px;
 }

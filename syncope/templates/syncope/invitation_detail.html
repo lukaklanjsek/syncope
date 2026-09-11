@@ -39,13 +39,17 @@
                     </label>
                 </p>
             {% endif %}
-            <button type="submit" name="decision" value="accept">Accept</button>
-            <button type="submit" name="decision" value="reject" class="danger">Reject</button>
+            <div class="form-actions">
+                <button type="submit" name="decision" value="reject" class="btn btn-secondary">Reject</button>
+                <button type="submit" name="decision" value="accept" class="btn btn-primary">Accept</button>
+            </div>
         </form>
     {% elif invitation.sender.username == url_username %}
         <form method="post">
             {% csrf_token %}
-            <button type="submit" name="decision" value="withdraw" class="danger">Withdraw</button>
+            <div class="form-actions">
+                <button type="submit" name="decision" value="withdraw" class="btn btn-secondary">Withdraw</button>
+            </div>
         </form>
     {% endif %}
 {% endif %}

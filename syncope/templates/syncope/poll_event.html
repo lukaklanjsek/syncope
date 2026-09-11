@@ -41,43 +41,45 @@
         {% if form.details.errors %}<span class="error">{{ form.details.errors }}</span>{% endif %}
     </div>
 
-    <button type="submit" style="margin-top: 1rem; padding: 0.5rem 1rem;">{% if editing %}Update{% else %}Add Event Slot{% endif %}</button>
+    <div class="form-actions">
+        <a href="{% url 'syncope:poll_detail' url_username poll.pk %}" class="btn btn-link">Back</a>
+        <button type="submit" class="btn btn-primary">{% if editing %}Update{% else %}Add{% endif %}</button>
+    </div>
 </form>
 
-<p>
-    <a href="{% url 'syncope:poll_detail' url_username poll.pk %}"><button style="margin-top: 1rem; padding: 0.5rem 1rem;">Back</button></a>
-</p>
-
-<h3>Added Event Slots ({{ poll_events|length }})</h3>
+<div class="section-header">
+    <h3>Added Event Slots</h3>
+    <span class="badge">{{ poll_events|length }}</span>
+</div>
 {% if poll_events %}
-<div style="max-width: 1000px; overflow-x: auto;">
-    <table style="border-collapse: collapse; width: 100%;">
+<div class="table-container">
+    <table class="table">
         <thead>
-            <tr style="background-color: #f8f9fa;">
-                <th style="border: 1px solid #ddd; padding: 8px; text-align: left; width: 50px;">#</th>
-                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Event Type</th>
-                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Date</th>
-                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Start <br> End</th>
-                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Location</th>
-                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Detail</th>
-                <th style="border: 1px solid #ddd; padding: 8px; text-align: center; width: 140px;">Actions</th>
+            <tr>
+                <th>#</th>
+                <th>Event Type</th>
+                <th>Date</th>
+                <th>Start <br> End</th>
+                <th>Location</th>
+                <th>Detail</th>
+                <th class="col-num">Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for pe in poll_events %}
             <tr>
-                <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">{{ forloop.counter }}</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">{{ pe.event_type.name }}</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">{% if pe.same_date %}<span data-dt="{{ pe.started_at|date:"c" }}" data-dt-fmt="date">{{ pe.started_at|date:"d M" }}</span>{% else %}<span data-dt="{{ pe.started_at|date:"c" }}" data-dt-fmt="date">{{ pe.started_at|date:"d M" }}</span> – <span data-dt="{{ pe.ended_at|date:"c" }}" data-dt-fmt="date">{{ pe.ended_at|date:"d M" }}</span>{% endif %}</td>
-                <td style="border: 1px solid #ddd; padding: 8px;"><span data-dt="{{ pe.started_at|date:"c" }}" data-dt-fmt="time">{{ pe.started_at|date:"H:i" }}</span> <br> <span data-dt="{{ pe.ended_at|date:"c" }}" data-dt-fmt="time">{{ pe.ended_at|date:"H:i" }}</span></td>
-                <td style="border: 1px solid #ddd; padding: 8px;">{% if pe.location %}{{ pe.location }}{% else %}<em>—</em>{% endif %}</td>
-                <td style="border: 1px solid #ddd; padding: 8px;">{% if pe.details %}{{ pe.details }}{% else %}<em>—</em>{% endif %}</td>
-                <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">
-                    <a href="{% url 'syncope:poll_event_update' url_username poll.pk pe.pk %}" style="margin-right: 0.5rem;">Edit</a>
+                <td class="col-num">{{ forloop.counter }}</td>
+                <td>{{ pe.event_type.name }}</td>
+                <td>{% if pe.same_date %}<span data-dt="{{ pe.started_at|date:"c" }}" data-dt-fmt="date">{{ pe.started_at|date:"d M" }}</span>{% else %}<span data-dt="{{ pe.started_at|date:"c" }}" data-dt-fmt="date">{{ pe.started_at|date:"d M" }}</span> – <span data-dt="{{ pe.ended_at|date:"c" }}" data-dt-fmt="date">{{ pe.ended_at|date:"d M" }}</span>{% endif %}</td>
+                <td><span data-dt="{{ pe.started_at|date:"c" }}" data-dt-fmt="time">{{ pe.started_at|date:"H:i" }}</span> <br> <span data-dt="{{ pe.ended_at|date:"c" }}" data-dt-fmt="time">{{ pe.ended_at|date:"H:i" }}</span></td>
+                <td>{% if pe.location %}{{ pe.location }}{% else %}<em>—</em>{% endif %}</td>
+                <td>{% if pe.details %}{{ pe.details }}{% else %}<em>—</em>{% endif %}</td>
+                <td class="col-num">
+                    <a href="{% url 'syncope:poll_event_update' url_username poll.pk pe.pk %}" class="btn btn-sm btn-link">Edit</a>
                     {% if is_admin %}
-                    <form method="post" action="{% url 'syncope:poll_event_remove' url_username poll.pk pe.pk %}" class="remove-event-form" data-event-type="{{ pe.event_type.name }}" style="display:inline;">
+                    <form method="post" action="{% url 'syncope:poll_event_remove' url_username poll.pk pe.pk %}" class="remove-event-form inline-form" data-event-type="{{ pe.event_type.name }}">
                         {% csrf_token %}
-                        <button type="submit" class="btn-danger" style="padding: 4px 8px; font-size: 0.9rem;" title="Remove this event slot">Remove</button>
+                        <button type="submit" class="btn btn-sm btn-danger" title="Remove this event slot">Remove</button>
                     </form>
                     {% endif %}
                 </td>

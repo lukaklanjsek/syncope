@@ -10,6 +10,8 @@
     <input type="hidden" name="draft_key" value="{{ draft_key }}">
     {% if request.GET.next %}<input type="hidden" name="next" value="{{ request.GET.next }}">{% endif %}
     {{ form.as_p }}
-    <button type="submit">Add event</button>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Add</button>
+    </div>
 </form>
 {% endblock %}

@@ -6,7 +6,9 @@
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Add new skill</button>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Add</button>
+    </div>
 </form>
 
 <h2> Skill list </h2>
@@ -15,10 +17,10 @@
     <p>{{ skill.title }}
     - info: {{ skill.additional_notes }} - added  {{ skill.created_at }}
     {% if is_admin %}
-    <form method="post" style="display: inline;">
+    <form method="post" class="inline-form">
         {% csrf_token %}
         <input type="hidden" name="skill_id" value="{{ skill.id }}">
-        <button type="submit" name="delete_skill" onclick="return confirm('Are you sure?')">Delete</button>
+        <button type="submit" name="delete_skill" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
       </form>
     {% endif %}
     </p>
